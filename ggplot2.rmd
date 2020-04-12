@@ -5,10 +5,6 @@ date: "11 April 2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ```{r}
 ## ggplot2 do this everytime you start R
 library(tidyverse)
@@ -99,6 +95,19 @@ ggplot(se, aes(x = year, y = visitors, color = park_name))+
 #barcharts
 ```{r}
 ggplot(data = visit_16, aes(x = state, y = visitors, fill = park_name)) +
-  geom_bar(stat = "identity")
+  geom_bar(stat = "identity", position = "dodge")
 ```
+
+#flipping x and y coords
+```{r}
+ggplot(data = visit_16, (aes(x = state, y = visitors, fill = park_name))) +
+         geom_bar(stat = "identity", position = "dodge")+
+         coord_flip()
+```
+  
+```{r}
+?colorRampPalette
+```
+
+ ```
 
