@@ -148,6 +148,9 @@ acad_vis <- ggplot(data = acadia, aes(x = year, y = visitors)) +
        x = "Year") +
   theme_bw()
 
+acad_vis
+
 ggplotly(acad_vis)
+
 ```
 
