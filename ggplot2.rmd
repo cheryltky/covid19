@@ -102,12 +102,21 @@ ggplot(data = visit_16, aes(x = state, y = visitors, fill = park_name)) +
 ```{r}
 ggplot(data = visit_16, (aes(x = state, y = visitors, fill = park_name))) +
          geom_bar(stat = "identity", position = "dodge")+
-         coord_flip()
-```
-  
-```{r}
-?colorRampPalette
+  coord_flip()
 ```
 
- ```
+#change x-axis tick labels to full state names  
+```{r}
+ggplot(data = visit_16, (aes( x= state, y = visitors, fill = park_name))) +
+         geom_bar(stat = "identity", position = "dodge")+
+  scale_x_discrete(labels=c("Arizona","Colorado"))
+```
+
+```{r}
+ggplot(data = mass)+
+  geom_bar (aes(x = type, fill = park_name))+
+  labs(x = "",
+       y = "")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 7))
+```
 
