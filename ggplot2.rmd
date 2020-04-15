@@ -120,3 +120,34 @@ ggplot(data = mass)+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 7))
 ```
 
+#to save publication quality plots
+```{r}
+my_plot <- ggplot(data = mass)+
+  geom_bar (aes(x = type, fill = park_name))+
+  labs(x = "",
+       y = "")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 7))
+
+ggsave("name_of_file.png", my_plot, width = 15, height = 10)
+```
+
+#other interactive packages
+```{r}
+install.packages("plotly")
+library(plotly)
+ggplotly(my_plot)
+```
+
+```{r}
+acad_vis <- ggplot(data = acadia, aes(x = year, y = visitors)) + 
+  geom_point() +
+  geom_line() +
+  geom_smooth(color = "red") +
+  labs(title = "Acadia National Park Visitation",
+       y = "Visitation",
+       x = "Year") +
+  theme_bw()
+
+ggplotly(acad_vis)
+```
+
