@@ -9,36 +9,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## GG animate
-
-```{r}
-library(tictoc)
-library(pryr)
-library(sf)
-library(maps)
-library(gganimate)
-library(magick)
-library(janitor)
-library(tidyverse)
-```
-
-```{r}
-states <- st_as_sf(maps::map(database = "state",plot=F,fill=T)) 
-
-states %>%
-  ggplot()+
-  geom_sf()
-```
-
-```{r}
-jhu_confirmed_cases_US <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-14-2020.csv")
-  
-head(jhu_confirmed_cases_US)
-
-```
+#GG animate
 
 
+##Application of covid19 dataset to gganimate
 
+#Tutorial1
 ```{r}
 # coronavirus evolution of cases over time using the Johns Hopkins data set
 # 1.03.2020, protzetter@bluewin.ch, https://www.linkedin.com/in/rotzetter/
