@@ -11,7 +11,7 @@ gapminder <- readr::read_csv("https://raw.githubusercontent.com/OHI-Science/data
 
 head(gapminder)
 tail(gapminder)
-head(gapminder,10)
+head(gapminder,10)#shows first time I indicate
 str(gapminder)
 names(gapminder)
 summary(gapminder)
@@ -50,5 +50,50 @@ filter(gapminder, country == "Mexico", year ==2002)
 #Average life expectancy in Brazil b/w 1987 and 2007
 x <- filter(gapminder, country == "Brazil", year > 1986)
 mean(x$lifeExp)
+```
+
+```{r}
+#select multiple columns with a comma after specifying the data frame ( gapminder)
+
+select(gapminder, year, country, lifeExp)
+
+# or use select to DEselect columns too
+select(gapminder, -continent, -lifeExp)
+```
+
+```{r}
+# filter for Cambodia, remove continent and lifeExp by using filter and select
+gap_cambodia <- filter(gapminder, country =="Cambodia")
+gap_cambodia2 <- select(gap_cambodia, -continent, -lifeExp)
+
+gap_cambodia2
+
+#or I can use the %>% function
+gap_cambodia <- gapminder %>% 
+  filter(country == "Cambodia") %>% 
+  select(-continent, -lifeExp)
+
+```
+
+```{r}
+#Use piping function instead of subsetting manually
+# To see the first 3 rows of Gapminder, we can say
+head(gapminder, 3)
+#0R
+gapminder %>% head(3)
+
+```
+
+```{r}
+
+#mutate adds new variables or adds a new column to your data frame
+
+#to calculate the country's gdp
+
+gapminder %>% 
+  mutate(gdp = pop * gdpPercap)
+
+summary(gapminder)
+
 ```
 
