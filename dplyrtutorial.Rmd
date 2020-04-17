@@ -89,11 +89,19 @@ gapminder %>% head(3)
 #mutate adds new variables or adds a new column to your data frame
 
 #to calculate the country's gdp
+head(gapminder)
+
+gapminder %>%
+  mutate(gdp = pop*gdpPercap) %>% 
+select(country, gdp) # this cleans up the dataframe
+
+#Calculate the population in thousands for all Asian countries in the year 2007 and add it as a new column.
 
 gapminder %>% 
-  mutate(gdp = pop * gdpPercap)
-
-summary(gapminder)
+  filter(continent == "Asia",
+         year == 2007) %>% 
+  mutate(pop_thousands = pop/1000) %>% 
+  select(country, year, pop_thousands) # this cleans up the dataframe but isn't necessary
 
 ```
 
