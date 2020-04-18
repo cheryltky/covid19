@@ -105,3 +105,54 @@ gapminder %>%
 
 ```
 
+```{r}
+# grouping variable
+#What if we wanted to know the total population on each continent in 2002? 
+
+gapminder %>% 
+  filter(year == 2002) %>%
+  group_by(continent) %>% # add up all country populations by their associated continents
+  mutate(cont_pop = sum(pop))#creates a new column called cont_pop
+
+# now we want only columns showing continent and their population in 2002
+# use summarize or group_by function
+gapminder %>% 
+  group_by(continent) %>% 
+  summarize(cont_pop = sum(pop)) %>% #summarize groups only columns we want
+  ungroup()
+
+#to use more than 1 grouping variable
+
+gapminder %>% 
+  group_by(continent, year) %>% 
+  summarize(cont_pop = sum(pop)) %>% 
+  arrange(year)#arrange function orders columns
+
+#What is the maximum GDP per continent across all years?
+gapminder %>% 
+  mutate(gdp = pop*gdpPercap ) %>% 
+  group_by(continent) %>% 
+  mutate(max_gdp = max(gdp)) %>% 
+  filter(gdp == max_gdp) %>% 
+  select(continent, gdp)
+
+#arrange the df in descending order
+?arrange
+gapminder %>% 
+  group_by(continent,year) %>% 
+  summarize(cont_pop = sum(pop)) %>% 
+  arrange(desc(year)) %>% 
+ ungroup()
+
+#Find the maximum life capacity for countries in Asia
+
+asia_life_exp <- gapminder %>% 
+  filter(continent == 'Asia') %>% 
+  group_by(country) %>% 
+  filter(lifeExp == max(lifeExp)) %>% 
+  arrange(year)
+asia_life_exp
+```
+
+
+
