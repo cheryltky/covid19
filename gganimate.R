@@ -55,3 +55,30 @@ p +
 p +
   geom_point(aes(group = seq_along(Day)))+
   transition_reveal(Day)
+
+#Transition between diff stages of the data
+library(dplyr)
+mean.temp <- airquality %>% 
+  group_by(Month) %>% 
+  summarise(Temp = mean(Temp))
+mean.temp
+
+#create a bar plot of mean temperature
+
+p <- ggplot(mean.temp, aes(Month, Temp, fill = Temp)) +
+geom_col()+
+  scale_fill_distiller(palette = "Reds", direction = 1)+
+  theme_minimal()+
+  theme(
+    panel.grid = element_blank(),
+    panel.grid.major.y = element_line(color = "white"),
+    panel.ontop = TRUE)
+p
+
+#transition states
+
+p + transition_states(Month, wrap = FALSE)+
+  shadow_mark()+
+#enter grow and fdae
+enter_grow()+
+  enter_fade()
