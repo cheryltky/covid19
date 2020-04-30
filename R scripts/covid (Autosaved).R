@@ -1,18 +1,20 @@
 #load library 
+install.packages("readr")
+install.packages("tidyverse")
+install.packages("gganimate")
+
+
 library(tidyverse)
 library(ggplot2)
 library(gganimate)
+library(readr)
 theme_set(theme_bw())
 
-#load the data
-#australia's data only
-covid <- readr::read_csv("~/Github/covid19/Data/Australian coronavirus tracking - latest totals.csv")
-head(covid)
-str(covid)
-summary(covid)
+##only for troubleshooting.
+#setwd("~/Documents/cheryl/covid19")
 
 #globaldatafromjhu
-global <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")
+global <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", stringsAsFactors=F)
 
 head(global)
 str(global)
@@ -23,38 +25,9 @@ ncol(global)
 nrow(global)
 glimpse(global)
 
-
-global$`1/22/20`
-summary(global$`1/22/20`)
-
-select(global, "Country/Region", "4/26/20")
-
-ggplot(data = global)+
-  geom_point(aes( x= "~4/26/20", y = "Country/Region"))
-
-ggplot(data = covid) +
-  geom_point(aes(x = State, y = Confirmed_cumulative, color = State)) +
-  labs(x = "State",
-       y = "COnfirmed Cases",
-       title = "Australia Nationwide COVID-19 Count") +
-  theme_bw()+
-  theme(legend.title = element_blank())
-
-ggplot(data = covid) +
-aes(x = State, y = Confirmed_cumulative, size = Current_hospitalisation, color = State)+
-  geom_point(show.legend = FALSE, alpha = 0.7) +
-  scale_color_viridis_d()+
-  scale_size(range = c(2,12))+
-  labs(x = "State", y = "Confirmed Cases", title = "Australia COVID-19 Cases")
-
-##Using Maciej's R script further edited by Cheryl
-
-countries <- unique(global$"Country/Region")
+countries <- unique(global$CountryRegion)
 
 nglob <- matrix(NA, nrow=dim(global)[2]-4, ncol=length(countries))
-nglob
-nrow(nglob)
-ncol(nglob)
 date <- names(global)[5:length(names(global))]
 date <- gsub("X", "", date)
 colnames(nglob) = countries
@@ -62,9 +35,9 @@ row.names(nglob) = date
 
 # algorithm to aggregate values per country so we have only one value per country
 for(i in 1:length(countries)){
-  x <- global[which(global$Country.Region == countries[i]), 5:dim(global)[2]]
-  xx <- as.vector(colSums(x))
-  nglob[,i] <- xx
+	x <- global[which(global$Country.Region == countries[i]), 5:dim(global)[2]]
+	xx <- as.vector(colSums(x))
+	nglob[,i] <- xx
 }
 
 # transpose
@@ -78,8 +51,8 @@ glob$Country <- row.names(tnglob)
 # wide to long
 library(reshape2)
 globl <- melt(glob, id.vars=c("Country"))
-str(globl)
-head(globl)
+
+
 ggplot(data=globl, aes(x=variable, y=value, color=Country)) + geom_point() + theme(legend.position='none')
 
 selc <- c("US", "United Kingdom", "Italy", "Spain")
@@ -113,7 +86,7 @@ select(global, "Country/Region", "4/26/20")
 
 select(global, "Country.Region", "X4.26.20")
 
-ggplot(data = global, aes( x= "4/26/20", y = "Country/Region"))+
+ggplot(data = global, aes( x= "~4/26/20", y = "Country/Region"))+
   geom_point()
 
 ggplot(data = global, aes( x="X4.26.20", y = "Country.Region"))+
@@ -128,7 +101,7 @@ ggplot(data = covid) +
   theme(legend.title = element_blank())
 
 ggplot(data = covid) +
-  aes(x = State, y = Confirmed_cumulative, size = Current_hospitalisation, color = State)+
+aes(x = State, y = Confirmed_cumulative, size = Current_hospitalisation, color = State)+
   geom_point(show.legend = FALSE, alpha = 0.7) +
   scale_color_viridis_d()+
   scale_size(range = c(2,12))+
@@ -170,7 +143,5 @@ lines(rates_long$variable[which(rates_long=="United Kingdom")], rates_long$value
 lines(rates_long$variable[which(rates_long=="Italy")], rates_long$value[which(rates_long=="Italy")], col="green")
 lines(rates_long$variable[which(rates_long=="Spain")], rates_long$value[which(rates_long=="Spain")], col="orange")
 dev.off()
-
-
 
 
