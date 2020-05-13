@@ -66,7 +66,7 @@ for(i in 1:length(countries)){
   xx <- as.vector(colSums(x))
   nglob[,i] <- xx
 }
-
+##the "i" is a variable that can be assigned any name.
 # transpose
 tnglob <- t(nglob)
 

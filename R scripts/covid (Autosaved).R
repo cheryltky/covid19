@@ -10,8 +10,19 @@ library(gganimate)
 library(readr)
 theme_set(theme_bw())
 
+<<<<<<< HEAD
 ##only for troubleshooting.
 #setwd("~/Documents/cheryl/covid19")
+=======
+setwd("~/Documents/cheryl/covid19")
+
+#load the data
+#australia's data only
+covid <- readr::read_csv("~/Github/covid19/Data/Australian coronavirus tracking - latest totals.csv")
+head(covid)
+str(covid)
+summary(covid)
+>>>>>>> 8bd476c00cbec062e6707f747e0ba728ce8bb74b
 
 #globaldatafromjhu
 global <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", stringsAsFactors=F)
@@ -25,7 +36,11 @@ ncol(global)
 nrow(global)
 glimpse(global)
 
+<<<<<<< HEAD
 countries <- unique(global$CountryRegion)
+=======
+countries <- unique(global$Country.Region)
+>>>>>>> 8bd476c00cbec062e6707f747e0ba728ce8bb74b
 
 nglob <- matrix(NA, nrow=dim(global)[2]-4, ncol=length(countries))
 date <- names(global)[5:length(names(global))]
