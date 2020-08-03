@@ -1,4 +1,5 @@
 name: "Covid-19 Projects"
+output_dir: "_site"
 navbar:
   title: "Covid-19 Projects"
   left:
