@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Cheryl" />
+
+<meta name="date" content="2020-04-11" />
+
+<title>Graphics with ggplot2</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Covid-19 Projects</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="covid19stats.html">Covid-19 Project</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Graphics with ggplot2</h1>
+<h4 class="author">Cheryl</h4>
+<h4 class="date">11 April 2020</h4>
+
+</div>
+
+
+<pre class="r"><code>## ggplot2 do this everytime you start R
+library(tidyverse)</code></pre>
+<pre class="r"><code>#National Parks in California
+ca &lt;- read_csv(&quot;https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/ca.csv&quot;) </code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   region = col_character(),
+##   state = col_character(),
+##   code = col_character(),
+##   park_name = col_character(),
+##   type = col_character(),
+##   visitors = col_double(),
+##   year = col_double()
+## )</code></pre>
+<pre class="r"><code>#Acadia National Park
+acadia &lt;- read_csv(&quot;https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/acadia.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   region = col_character(),
+##   state = col_character(),
+##   code = col_character(),
+##   park_name = col_character(),
+##   type = col_character(),
+##   visitors = col_double(),
+##   year = col_double()
+## )</code></pre>
+<pre class="r"><code>#Southeast US National Parks
+se &lt;- read_csv(&quot;https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/se.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   region = col_character(),
+##   state = col_character(),
+##   code = col_character(),
+##   park_name = col_character(),
+##   type = col_character(),
+##   visitors = col_double(),
+##   year = col_double()
+## )</code></pre>
+<pre class="r"><code>#2016 Visitation for all Pacific West National Parks
+visit_16 &lt;- read_csv(&quot;https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/visit_16.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   region = col_character(),
+##   state = col_character(),
+##   code = col_character(),
+##   park_name = col_character(),
+##   type = col_character(),
+##   visitors = col_double(),
+##   year = col_double()
+## )</code></pre>
+<pre class="r"><code>#All Nationally designated sites in Massachusetts
+mass &lt;- read_csv(&quot;https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/mass.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   region = col_character(),
+##   state = col_character(),
+##   code = col_character(),
+##   park_name = col_character(),
+##   type = col_character(),
+##   visitors = col_double(),
+##   year = col_double()
+## )</code></pre>
+<div id="building-my-plot" class="section level1">
+<h1>Building my plot</h1>
+<pre class="r"><code>head(ca)</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   region state code  park_name                   type        visitors  year
+##   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                       &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt;
+## 1 PW     CA    CHIS  Channel Islands National P~ National P~     1200  1963
+## 2 PW     CA    CHIS  Channel Islands National P~ National P~     1500  1964
+## 3 PW     CA    CHIS  Channel Islands National P~ National P~     1600  1965
+## 4 PW     CA    CHIS  Channel Islands National P~ National P~      300  1966
+## 5 PW     CA    CHIS  Channel Islands National P~ National P~    15700  1967
+## 6 PW     CA    CHIS  Channel Islands National P~ National P~    31000  1968</code></pre>
+<pre class="r"><code>ggplot(data = ca) +
+  geom_point(aes(x = year, y = visitors, color = park_name)) + #add colour
+  labs( x = &quot;Year&quot;, 
+        y = &quot;Visitation&quot;,
+        title = &quot;Californaia National Park Visitation&quot;) + #Add title, change plot background
+  theme_bw() +
+  theme(legend.title = element_blank())</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="exercise-for-se-parks-dataset" class="section level1">
+<h1>Exercise for SE parks dataset</h1>
+<pre class="r"><code>head(se)</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   region state code  park_name              type          visitors  year
+##   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;                  &lt;chr&gt;            &lt;dbl&gt; &lt;dbl&gt;
+## 1 SE     FL    BISC  Biscayne National Park National Park    78147  1972
+## 2 SE     FL    BISC  Biscayne National Park National Park   243100  1973
+## 3 SE     FL    BISC  Biscayne National Park National Park   409700  1974
+## 4 SE     FL    BISC  Biscayne National Park National Park   351500  1975
+## 5 SE     FL    BISC  Biscayne National Park National Park   339100  1976
+## 6 SE     FL    BISC  Biscayne National Park National Park   205900  1977</code></pre>
+<pre class="r"><code>ggplot(data = se) +
+  geom_point(aes(x = year, y = visitors, color = park_name)) +
+  labs( x = &quot;Year&quot;, 
+        y = &quot;Visitation&quot;,
+        title = &quot; Southeast States National Park Visitation&quot;) +
+  theme_light()+
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 90, hjust = 1, size = 14 ))</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="faceting-to-split-one-plot-into-multiple-plots" class="section level1">
+<h1>faceting to split one plot into multiple plots</h1>
+<pre class="r"><code>ggplot(data = se) +
+  geom_point(aes(x = year, y = visitors)) +
+  facet_wrap(~state)</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="make-the-faceted-plot-split-further-by-park" class="section level1">
+<h1>make the faceted plot split further by park</h1>
+<pre class="r"><code>ggplot(data = se)+
+  geom_point(aes(x = year, y = visitors, color = park_name))+
+  facet_wrap(~state, scales = &quot;free&quot;)</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="geoms" class="section level1">
+<h1>Geoms</h1>
+<pre class="r"><code>#geomjitter
+ggplot(data = se) +
+  geom_jitter(aes(x = park_name, y = visitors, color = park_name),
+              width = 0.1,
+              alpha = 0.4) +
+  coord_flip() +
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>#geomboxplot
+ggplot(se, aes(x = park_name, y = visitors)) +
+  geom_boxplot()+
+  theme(axis.text.x = element_text(angle = 45, hjust =1))</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+<pre class="r"><code>#geomline
+
+ggplot(se, aes(x = year, y = visitors, color = park_name))+
+  geom_line()</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
+</div>
+<div id="barcharts" class="section level1">
+<h1>barcharts</h1>
+<pre class="r"><code>ggplot(data = visit_16, aes(x = state, y = visitors, fill = park_name)) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;)</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="flipping-x-and-y-coords" class="section level1">
+<h1>flipping x and y coords</h1>
+<pre class="r"><code>ggplot(data = visit_16, (aes(x = state, y = visitors, fill = park_name))) +
+         geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;)+
+  coord_flip()</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="change-x-axis-tick-labels-to-full-state-names" class="section level1">
+<h1>change x-axis tick labels to full state names</h1>
+<pre class="r"><code>ggplot(data = visit_16, (aes( x= state, y = visitors, fill = park_name))) +
+         geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;)+
+  scale_x_discrete(labels=c(&quot;Arizona&quot;,&quot;Colorado&quot;))</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(data = mass)+
+  geom_bar (aes(x = type, fill = park_name))+
+  labs(x = &quot;&quot;,
+       y = &quot;&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 7))</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="to-save-publication-quality-plots" class="section level1">
+<h1>to save publication quality plots</h1>
+<pre class="r"><code>my_plot &lt;- ggplot(data = mass)+
+  geom_bar (aes(x = type, fill = park_name))+
+  labs(x = &quot;&quot;,
+       y = &quot;&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 7))
+
+ggsave(&quot;name_of_file.png&quot;, my_plot, width = 15, height = 10)</code></pre>
+</div>
+<div id="other-interactive-packages" class="section level1">
+<h1>other interactive packages</h1>
+<pre class="r"><code>install.packages(&quot;plotly&quot;)</code></pre>
+<pre><code>## Installing package into &#39;C:/Users/Cheryl TKY/Documents/R/win-library/3.5&#39;
+## (as &#39;lib&#39; is unspecified)</code></pre>
+<pre><code>## package &#39;plotly&#39; successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\Cheryl TKY\AppData\Local\Temp\RtmpAHGPYI\downloaded_packages</code></pre>
+<pre class="r"><code>library(plotly)</code></pre>
+<pre><code>## Warning: package &#39;plotly&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;plotly&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     last_plot</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     filter</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     layout</code></pre>
+<pre class="r"><code>ggplotly(my_plot)</code></pre>
+<div id="htmlwidget-72c3b3167e9e7f0bdef6" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-72c3b3167e9e7f0bdef6">{"x":{"data":[{"orientation":"v","width":0.9,"base":4,"x":[2],"y":[1],"text":"count: 1<br />type: National Historical Park<br />park_name: Adams National Historical Park","type":"bar","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Adams National Historical Park","legendgroup":"Adams National Historical Park","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":6,"x":[1],"y":[1],"text":"count: 1<br />type: National Historic Site<br />park_name: Boston African American National Historic Site","type":"bar","marker":{"autocolorscale":false,"color":"rgba(225,138,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Boston African American National Historic Site","legendgroup":"Boston African American National Historic Site","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":3,"x":[2],"y":[1],"text":"count: 1<br />type: National Historical Park<br />park_name: Boston National Historical Park","type":"bar","marker":{"autocolorscale":false,"color":"rgba(190,156,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Boston National Historical Park","legendgroup":"Boston National Historical Park","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":0,"x":[3],"y":[1],"text":"count: 1<br />type: National Seashore<br />park_name: Cape Cod National Seashore","type":"bar","marker":{"autocolorscale":false,"color":"rgba(140,171,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Cape Cod National Seashore","legendgroup":"Cape Cod National Seashore","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":5,"x":[1],"y":[1],"text":"count: 1<br />type: National Historic Site<br />park_name: Frederick Law Olmsted National Historic Site","type":"bar","marker":{"autocolorscale":false,"color":"rgba(36,183,0,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Frederick Law Olmsted National Historic Site","legendgroup":"Frederick Law Olmsted National Historic Site","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":4,"x":[1],"y":[1],"text":"count: 1<br />type: National Historic Site<br />park_name: John Fitzgerald Kennedy National Historic Site","type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,190,112,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"John Fitzgerald Kennedy National Historic Site","legendgroup":"John Fitzgerald Kennedy National Historic Site","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":3,"x":[1],"y":[1],"text":"count: 1<br />type: National Historic Site<br />park_name: Longfellow House-Washington's Headquarters National Historic Site","type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,193,171,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Longfellow House-Washington's Headquarters National Historic Site","legendgroup":"Longfellow House-Washington's Headquarters National Historic Site","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":2,"x":[2],"y":[1],"text":"count: 1<br />type: National Historical Park<br />park_name: Lowell National Historical Park","type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,187,218,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Lowell National Historical Park","legendgroup":"Lowell National Historical Park","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":1,"x":[2],"y":[1],"text":"count: 1<br />type: National Historical Park<br />park_name: Minute Man National Historical Park","type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,172,252,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Minute Man National Historical Park","legendgroup":"Minute Man National Historical Park","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":0,"x":[2],"y":[1],"text":"count: 1<br />type: National Historical Park<br />park_name: New Bedford Whaling National Historical Park","type":"bar","marker":{"autocolorscale":false,"color":"rgba(139,147,255,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"New Bedford Whaling National Historical Park","legendgroup":"New Bedford Whaling National Historical Park","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":2,"x":[1],"y":[1],"text":"count: 1<br />type: National Historic Site<br />park_name: Salem Maritime National Historic Site","type":"bar","marker":{"autocolorscale":false,"color":"rgba(213,117,254,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Salem Maritime National Historic Site","legendgroup":"Salem Maritime National Historic Site","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":1,"x":[1],"y":[1],"text":"count: 1<br />type: National Historic Site<br />park_name: Saugus Iron Works National Historic Site","type":"bar","marker":{"autocolorscale":false,"color":"rgba(249,98,221,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Saugus Iron Works National Historic Site","legendgroup":"Saugus Iron Works National Historic Site","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":0.9,"base":0,"x":[1],"y":[1],"text":"count: 1<br />type: National Historic Site<br />park_name: Springfield Armory National Historic Site","type":"bar","marker":{"autocolorscale":false,"color":"rgba(255,101,172,1)","line":{"width":1.88976377952756,"color":"transparent"}},"name":"Springfield Armory National Historic Site","legendgroup":"Springfield Armory National Historic Site","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":72.7007068674812,"l":16.8036529680365},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,3.6],"tickmode":"array","ticktext":["National Historic Site","National Historical Park","National Seashore"],"tickvals":[1,2,3],"categoryorder":"array","categoryarray":["National Historic Site","National Historical Park","National Seashore"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":9.29846409298464},"tickangle":-45,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.35,7.35],"tickmode":"array","ticktext":["0","2","4","6"],"tickvals":[0,2,4,6],"categoryorder":"array","categoryarray":["0","2","4","6"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.96751968503937},"annotations":[{"text":"park_name","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"397071db90c":{"x":{},"fill":{},"type":"bar"}},"cur_data":"397071db90c","visdat":{"397071db90c":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>acad_vis &lt;- ggplot(data = acadia, aes(x = year, y = visitors)) + 
+  geom_point() +
+  geom_line() +
+  geom_smooth(color = &quot;red&quot;) +
+  labs(title = &quot;Acadia National Park Visitation&quot;,
+       y = &quot;Visitation&quot;,
+       x = &quot;Year&quot;) +
+  theme_bw()
+
+acad_vis</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="ggplot2_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>ggplotly(acad_vis)</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<div id="htmlwidget-806fe6ea891b02e00e63" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-806fe6ea891b02e00e63">{"x":{"data":[{"x":[1919,1920,1921,1922,1923,1924,1925,1926,1927,1928,1929,1930,1931,1932,1933,1934,1935,1936,1937,1938,1939,1940,1941,1942,1943,1944,1945,1946,1947,1948,1949,1950,1951,1952,1953,1954,1955,1956,1957,1958,1959,1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016],"y":[64000,66500,69836,73779,64200,71758,73673,101256,123699,134897,149554,154734,162238,237596,262712,275956,316114,340393,383036,394319,396468,382084,409961,36544,8246,12916,20200,382390,434069,420846,438584,485220,518556,549075,556195,553800,655000,735500,858900,816500,755900,1638200,1574600,1601500,1864800,2011600,1733600,2158400,2102000,2303300,2489800,2776300,2101100,2285881,2394000,2335800,2380500,2353300,2734600,2684933,2787366,2779666,2997972,3572114,4124639,3734763,3745570,3929054,4288154,4502283,5440952,2339591,2475857,2382113,2656034,2710749,2845378,2704831,2760306,2594497,2602227,2469238,2516551,2558572,2431062,2207847,2051484,2083588,2202228,2075857,2227698,2504208,2374645,2431052,2254922,2563129,2811184,3303393],"text":["year: 1919<br />visitors:   64000","year: 1920<br />visitors:   66500","year: 1921<br />visitors:   69836","year: 1922<br />visitors:   73779","year: 1923<br />visitors:   64200","year: 1924<br />visitors:   71758","year: 1925<br />visitors:   73673","year: 1926<br />visitors:  101256","year: 1927<br />visitors:  123699","year: 1928<br />visitors:  134897","year: 1929<br />visitors:  149554","year: 1930<br />visitors:  154734","year: 1931<br />visitors:  162238","year: 1932<br />visitors:  237596","year: 1933<br />visitors:  262712","year: 1934<br />visitors:  275956","year: 1935<br />visitors:  316114","year: 1936<br />visitors:  340393","year: 1937<br />visitors:  383036","year: 1938<br />visitors:  394319","year: 1939<br />visitors:  396468","year: 1940<br />visitors:  382084","year: 1941<br />visitors:  409961","year: 1942<br />visitors:   36544","year: 1943<br />visitors:    8246","year: 1944<br />visitors:   12916","year: 1945<br />visitors:   20200","year: 1946<br />visitors:  382390","year: 1947<br />visitors:  434069","year: 1948<br />visitors:  420846","year: 1949<br />visitors:  438584","year: 1950<br />visitors:  485220","year: 1951<br />visitors:  518556","year: 1952<br />visitors:  549075","year: 1953<br />visitors:  556195","year: 1954<br />visitors:  553800","year: 1955<br />visitors:  655000","year: 1956<br />visitors:  735500","year: 1957<br />visitors:  858900","year: 1958<br />visitors:  816500","year: 1959<br />visitors:  755900","year: 1960<br />visitors: 1638200","year: 1961<br />visitors: 1574600","year: 1962<br />visitors: 1601500","year: 1963<br />visitors: 1864800","year: 1964<br />visitors: 2011600","year: 1965<br />visitors: 1733600","year: 1966<br />visitors: 2158400","year: 1967<br />visitors: 2102000","year: 1968<br />visitors: 2303300","year: 1969<br />visitors: 2489800","year: 1970<br />visitors: 2776300","year: 1971<br />visitors: 2101100","year: 1972<br />visitors: 2285881","year: 1973<br />visitors: 2394000","year: 1974<br />visitors: 2335800","year: 1975<br />visitors: 2380500","year: 1976<br />visitors: 2353300","year: 1977<br />visitors: 2734600","year: 1978<br />visitors: 2684933","year: 1979<br />visitors: 2787366","year: 1980<br />visitors: 2779666","year: 1981<br />visitors: 2997972","year: 1982<br />visitors: 3572114","year: 1983<br />visitors: 4124639","year: 1984<br />visitors: 3734763","year: 1985<br />visitors: 3745570","year: 1986<br />visitors: 3929054","year: 1987<br />visitors: 4288154","year: 1988<br />visitors: 4502283","year: 1989<br />visitors: 5440952","year: 1990<br />visitors: 2339591","year: 1991<br />visitors: 2475857","year: 1992<br />visitors: 2382113","year: 1993<br />visitors: 2656034","year: 1994<br />visitors: 2710749","year: 1995<br />visitors: 2845378","year: 1996<br />visitors: 2704831","year: 1997<br />visitors: 2760306","year: 1998<br />visitors: 2594497","year: 1999<br />visitors: 2602227","year: 2000<br />visitors: 2469238","year: 2001<br />visitors: 2516551","year: 2002<br />visitors: 2558572","year: 2003<br />visitors: 2431062","year: 2004<br />visitors: 2207847","year: 2005<br />visitors: 2051484","year: 2006<br />visitors: 2083588","year: 2007<br />visitors: 2202228","year: 2008<br />visitors: 2075857","year: 2009<br />visitors: 2227698","year: 2010<br />visitors: 2504208","year: 2011<br />visitors: 2374645","year: 2012<br />visitors: 2431052","year: 2013<br />visitors: 2254922","year: 2014<br />visitors: 2563129","year: 2015<br />visitors: 2811184","year: 2016<br />visitors: 3303393"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"frame":null},{"x":[1919,1920.22784810127,1921.45569620253,1922.6835443038,1923.91139240506,1925.13924050633,1926.36708860759,1927.59493670886,1928.82278481013,1930.05063291139,1931.27848101266,1932.50632911392,1933.73417721519,1934.96202531646,1936.18987341772,1937.41772151899,1938.64556962025,1939.87341772152,1941.10126582278,1942.32911392405,1943.55696202532,1944.78481012658,1946.01265822785,1947.24050632911,1948.46835443038,1949.69620253165,1950.92405063291,1952.15189873418,1953.37974683544,1954.60759493671,1955.83544303797,1957.06329113924,1958.29113924051,1959.51898734177,1960.74683544304,1961.9746835443,1963.20253164557,1964.43037974684,1965.6582278481,1966.88607594937,1968.11392405063,1969.3417721519,1970.56962025316,1971.79746835443,1973.0253164557,1974.25316455696,1975.48101265823,1976.70886075949,1977.93670886076,1979.16455696203,1980.39240506329,1981.62025316456,1982.84810126582,1984.07594936709,1985.30379746835,1986.53164556962,1987.75949367089,1988.98734177215,1990.21518987342,1991.44303797468,1992.67088607595,1993.89873417722,1995.12658227848,1996.35443037975,1997.58227848101,1998.81012658228,2000.03797468354,2001.26582278481,2002.49367088608,2003.72151898734,2004.94936708861,2006.17721518987,2007.40506329114,2008.63291139241,2009.86075949367,2011.08860759494,2012.3164556962,2013.54430379747,2014.77215189873,2016],"y":[221684.323858604,190366.537467081,162820.291399671,139051.137823219,119064.628904559,102866.316810536,90461.7537079907,81856.4917637643,77056.0831446979,76066.0800176322,78898.2852466167,85708.8325284809,96527.2797757006,111305.157248147,129993.99520569,152545.323908196,178910.673615546,209041.574587605,242889.557084244,280406.151365335,321509.41126418,365965.026452631,413831.116661587,465222.498244391,520253.987554386,579040.400944915,641696.554769309,708337.265380934,779077.349133121,854031.622379214,936409.562802844,1034264.39689695,1144940.75050314,1265040.72406067,1391166.41800877,1519919.93278666,1647903.36883358,1771718.82658873,1887968.4064914,1993254.20898079,2096444.18853076,2211283.20900885,2334058.19954682,2460927.15478974,2588048.06938278,2711578.937971,2827677.75519953,2932502.51571345,3022211.21415788,3092961.8451779,3141462.59288489,3173287.92391199,3192453.77596741,3200930.69746792,3200689.23683032,3193699.94247139,3181933.36280792,3167360.04625668,3151950.54123447,3137675.39615807,3124967.86574683,3107400.92311685,3084199.69552127,3055588.96511514,3021793.51405349,2983038.12449136,2939547.57858379,2891546.65848582,2839260.14635249,2782912.82433884,2722673.89602728,2658473.38545903,2590211.21105573,2517789.30556495,2441109.60173424,2360074.03231112,2274584.53004315,2184543.02767788,2089851.45796284,1990411.75364557],"text":["year: 1919.000<br />visitors:  221684.32","year: 1920.228<br />visitors:  190366.54","year: 1921.456<br />visitors:  162820.29","year: 1922.684<br />visitors:  139051.14","year: 1923.911<br />visitors:  119064.63","year: 1925.139<br />visitors:  102866.32","year: 1926.367<br />visitors:   90461.75","year: 1927.595<br />visitors:   81856.49","year: 1928.823<br />visitors:   77056.08","year: 1930.051<br />visitors:   76066.08","year: 1931.278<br />visitors:   78898.29","year: 1932.506<br />visitors:   85708.83","year: 1933.734<br />visitors:   96527.28","year: 1934.962<br />visitors:  111305.16","year: 1936.190<br />visitors:  129994.00","year: 1937.418<br />visitors:  152545.32","year: 1938.646<br />visitors:  178910.67","year: 1939.873<br />visitors:  209041.57","year: 1941.101<br />visitors:  242889.56","year: 1942.329<br />visitors:  280406.15","year: 1943.557<br />visitors:  321509.41","year: 1944.785<br />visitors:  365965.03","year: 1946.013<br />visitors:  413831.12","year: 1947.241<br />visitors:  465222.50","year: 1948.468<br />visitors:  520253.99","year: 1949.696<br />visitors:  579040.40","year: 1950.924<br />visitors:  641696.55","year: 1952.152<br />visitors:  708337.27","year: 1953.380<br />visitors:  779077.35","year: 1954.608<br />visitors:  854031.62","year: 1955.835<br />visitors:  936409.56","year: 1957.063<br />visitors: 1034264.40","year: 1958.291<br />visitors: 1144940.75","year: 1959.519<br />visitors: 1265040.72","year: 1960.747<br />visitors: 1391166.42","year: 1961.975<br />visitors: 1519919.93","year: 1963.203<br />visitors: 1647903.37","year: 1964.430<br />visitors: 1771718.83","year: 1965.658<br />visitors: 1887968.41","year: 1966.886<br />visitors: 1993254.21","year: 1968.114<br />visitors: 2096444.19","year: 1969.342<br />visitors: 2211283.21","year: 1970.570<br />visitors: 2334058.20","year: 1971.797<br />visitors: 2460927.15","year: 1973.025<br />visitors: 2588048.07","year: 1974.253<br />visitors: 2711578.94","year: 1975.481<br />visitors: 2827677.76","year: 1976.709<br />visitors: 2932502.52","year: 1977.937<br />visitors: 3022211.21","year: 1979.165<br />visitors: 3092961.85","year: 1980.392<br />visitors: 3141462.59","year: 1981.620<br />visitors: 3173287.92","year: 1982.848<br />visitors: 3192453.78","year: 1984.076<br />visitors: 3200930.70","year: 1985.304<br />visitors: 3200689.24","year: 1986.532<br />visitors: 3193699.94","year: 1987.759<br />visitors: 3181933.36","year: 1988.987<br />visitors: 3167360.05","year: 1990.215<br />visitors: 3151950.54","year: 1991.443<br />visitors: 3137675.40","year: 1992.671<br />visitors: 3124967.87","year: 1993.899<br />visitors: 3107400.92","year: 1995.127<br />visitors: 3084199.70","year: 1996.354<br />visitors: 3055588.97","year: 1997.582<br />visitors: 3021793.51","year: 1998.810<br />visitors: 2983038.12","year: 2000.038<br />visitors: 2939547.58","year: 2001.266<br />visitors: 2891546.66","year: 2002.494<br />visitors: 2839260.15","year: 2003.722<br />visitors: 2782912.82","year: 2004.949<br />visitors: 2722673.90","year: 2006.177<br />visitors: 2658473.39","year: 2007.405<br />visitors: 2590211.21","year: 2008.633<br />visitors: 2517789.31","year: 2009.861<br />visitors: 2441109.60","year: 2011.089<br />visitors: 2360074.03","year: 2012.316<br />visitors: 2274584.53","year: 2013.544<br />visitors: 2184543.03","year: 2014.772<br />visitors: 2089851.46","year: 2016.000<br />visitors: 1990411.75"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":3.77952755905512,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1919,1920.22784810127,1921.45569620253,1922.6835443038,1923.91139240506,1925.13924050633,1926.36708860759,1927.59493670886,1928.82278481013,1930.05063291139,1931.27848101266,1932.50632911392,1933.73417721519,1934.96202531646,1936.18987341772,1937.41772151899,1938.64556962025,1939.87341772152,1941.10126582278,1942.32911392405,1943.55696202532,1944.78481012658,1946.01265822785,1947.24050632911,1948.46835443038,1949.69620253165,1950.92405063291,1952.15189873418,1953.37974683544,1954.60759493671,1955.83544303797,1957.06329113924,1958.29113924051,1959.51898734177,1960.74683544304,1961.9746835443,1963.20253164557,1964.43037974684,1965.6582278481,1966.88607594937,1968.11392405063,1969.3417721519,1970.56962025316,1971.79746835443,1973.0253164557,1974.25316455696,1975.48101265823,1976.70886075949,1977.93670886076,1979.16455696203,1980.39240506329,1981.62025316456,1982.84810126582,1984.07594936709,1985.30379746835,1986.53164556962,1987.75949367089,1988.98734177215,1990.21518987342,1991.44303797468,1992.67088607595,1993.89873417722,1995.12658227848,1996.35443037975,1997.58227848101,1998.81012658228,2000.03797468354,2001.26582278481,2002.49367088608,2003.72151898734,2004.94936708861,2006.17721518987,2007.40506329114,2008.63291139241,2009.86075949367,2011.08860759494,2012.3164556962,2013.54430379747,2014.77215189873,2016,2016,2016,2014.77215189873,2013.54430379747,2012.3164556962,2011.08860759494,2009.86075949367,2008.63291139241,2007.40506329114,2006.17721518987,2004.94936708861,2003.72151898734,2002.49367088608,2001.26582278481,2000.03797468354,1998.81012658228,1997.58227848101,1996.35443037975,1995.12658227848,1993.89873417722,1992.67088607595,1991.44303797468,1990.21518987342,1988.98734177215,1987.75949367089,1986.53164556962,1985.30379746835,1984.07594936709,1982.84810126582,1981.62025316456,1980.39240506329,1979.16455696203,1977.93670886076,1976.70886075949,1975.48101265823,1974.25316455696,1973.0253164557,1971.79746835443,1970.56962025316,1969.3417721519,1968.11392405063,1966.88607594937,1965.6582278481,1964.43037974684,1963.20253164557,1961.9746835443,1960.74683544304,1959.51898734177,1958.29113924051,1957.06329113924,1955.83544303797,1954.60759493671,1953.37974683544,1952.15189873418,1950.92405063291,1949.69620253165,1948.46835443038,1947.24050632911,1946.01265822785,1944.78481012658,1943.55696202532,1942.32911392405,1941.10126582278,1939.87341772152,1938.64556962025,1937.41772151899,1936.18987341772,1934.96202531646,1933.73417721519,1932.50632911392,1931.27848101266,1930.05063291139,1928.82278481013,1927.59493670886,1926.36708860759,1925.13924050633,1923.91139240506,1922.6835443038,1921.45569620253,1920.22784810127,1919,1919],"y":[-133814.853204457,-136274.98875279,-136983.651496373,-136060.283883646,-133630.229882427,-129817.69827688,-124733.708264513,-118458.238640453,-111017.642111397,-102361.48244169,-92338.8021543236,-80533.3158073583,-66609.4000105261,-50305.2707394685,-31362.7636192007,-9541.76509675969,15370.2369096368,43553.6635796221,75156.2487610892,110294.698617404,149114.294970717,192016.750568075,238836.70891984,289242.208458337,342973.860657725,399953.596714468,460343.441098936,524548.799201713,593171.918187826,666930.822537901,749820.53947602,850160.176443077,964086.612412308,1086956.27827897,1214408.1026316,1342596.53572988,1468313.73696853,1588936.52643161,1702227.44419636,1806080.06438135,1910262.48687556,2027891.73692637,2154109.95794122,2283956.20208238,2412695.28912462,2536010.98317241,2650124.10041558,2751776.18789255,2838087.67150524,2906358.24851319,2954361.79304358,2987382.4929667,3008665.30978819,3019577.58379755,3021602.43259988,3016419.81557473,3005953.07302187,2992365.63851494,2978002.26534992,2965280.27986461,2954856.4129989,2939667.6147937,2918711.78451329,2892048.52840923,2859706.42504853,2821681.36566647,2777937.15059618,2728409.9786996,2673017.99801666,2611675.7369379,2544246.33356796,2470399.66020293,2389896.48065152,2302593.84359245,2208425.58664682,2107379.17352413,1999473.10833628,1884739.08478184,1763209.93174297,1634912.5765825,1634912.5765825,2345910.93070863,2416492.98418271,2484346.97057393,2549695.95175001,2612768.89109811,2673793.61682165,2732984.76753746,2790525.94145995,2846547.11071512,2901101.4584866,2954149.91173978,3005502.29468833,3054683.33827205,3101158.00657141,3144394.88331625,3183880.60305844,3219129.40182105,3249687.60652926,3275134.23144001,3295079.31849476,3310070.51245153,3325898.81711903,3342354.45399843,3357913.65259397,3370980.06936805,3379776.04106077,3382283.81113829,3376242.24214663,3359193.35485729,3328563.3927262,3279565.44184262,3206334.75681051,3113228.84353435,3005231.40998347,2887146.89276959,2763400.84964093,2637898.10749711,2514006.44115242,2394674.68109133,2282625.89018597,2180428.35358024,2073709.36878644,1954501.12674586,1827493.00069864,1697243.32984344,1567924.73338595,1443125.16984238,1325794.88859397,1218368.61735083,1122998.58612967,1041132.42222053,964982.780078416,892125.731560155,823049.668439682,758127.205175363,697534.114451047,641202.788030444,588825.524403333,539913.302337186,493904.527557643,450517.604113266,410622.865407399,374529.485595588,342451.110321455,314632.412913153,291350.75403058,272915.585235762,259663.959561927,251950.98086432,250135.372647557,254493.642476955,265129.808400793,282171.222167982,305657.215680495,335550.331897952,371759.487691546,414162.559530084,462624.234295714,517008.063686951,577183.500921666,-133814.853204457],"text":["year: 1919.000<br />visitors:  221684.32","year: 1920.228<br />visitors:  190366.54","year: 1921.456<br />visitors:  162820.29","year: 1922.684<br />visitors:  139051.14","year: 1923.911<br />visitors:  119064.63","year: 1925.139<br />visitors:  102866.32","year: 1926.367<br />visitors:   90461.75","year: 1927.595<br />visitors:   81856.49","year: 1928.823<br />visitors:   77056.08","year: 1930.051<br />visitors:   76066.08","year: 1931.278<br />visitors:   78898.29","year: 1932.506<br />visitors:   85708.83","year: 1933.734<br />visitors:   96527.28","year: 1934.962<br />visitors:  111305.16","year: 1936.190<br />visitors:  129994.00","year: 1937.418<br />visitors:  152545.32","year: 1938.646<br />visitors:  178910.67","year: 1939.873<br />visitors:  209041.57","year: 1941.101<br />visitors:  242889.56","year: 1942.329<br />visitors:  280406.15","year: 1943.557<br />visitors:  321509.41","year: 1944.785<br />visitors:  365965.03","year: 1946.013<br />visitors:  413831.12","year: 1947.241<br />visitors:  465222.50","year: 1948.468<br />visitors:  520253.99","year: 1949.696<br />visitors:  579040.40","year: 1950.924<br />visitors:  641696.55","year: 1952.152<br />visitors:  708337.27","year: 1953.380<br />visitors:  779077.35","year: 1954.608<br />visitors:  854031.62","year: 1955.835<br />visitors:  936409.56","year: 1957.063<br />visitors: 1034264.40","year: 1958.291<br />visitors: 1144940.75","year: 1959.519<br />visitors: 1265040.72","year: 1960.747<br />visitors: 1391166.42","year: 1961.975<br />visitors: 1519919.93","year: 1963.203<br />visitors: 1647903.37","year: 1964.430<br />visitors: 1771718.83","year: 1965.658<br />visitors: 1887968.41","year: 1966.886<br />visitors: 1993254.21","year: 1968.114<br />visitors: 2096444.19","year: 1969.342<br />visitors: 2211283.21","year: 1970.570<br />visitors: 2334058.20","year: 1971.797<br />visitors: 2460927.15","year: 1973.025<br />visitors: 2588048.07","year: 1974.253<br />visitors: 2711578.94","year: 1975.481<br />visitors: 2827677.76","year: 1976.709<br />visitors: 2932502.52","year: 1977.937<br />visitors: 3022211.21","year: 1979.165<br />visitors: 3092961.85","year: 1980.392<br />visitors: 3141462.59","year: 1981.620<br />visitors: 3173287.92","year: 1982.848<br />visitors: 3192453.78","year: 1984.076<br />visitors: 3200930.70","year: 1985.304<br />visitors: 3200689.24","year: 1986.532<br />visitors: 3193699.94","year: 1987.759<br />visitors: 3181933.36","year: 1988.987<br />visitors: 3167360.05","year: 1990.215<br />visitors: 3151950.54","year: 1991.443<br />visitors: 3137675.40","year: 1992.671<br />visitors: 3124967.87","year: 1993.899<br />visitors: 3107400.92","year: 1995.127<br />visitors: 3084199.70","year: 1996.354<br />visitors: 3055588.97","year: 1997.582<br />visitors: 3021793.51","year: 1998.810<br />visitors: 2983038.12","year: 2000.038<br />visitors: 2939547.58","year: 2001.266<br />visitors: 2891546.66","year: 2002.494<br />visitors: 2839260.15","year: 2003.722<br />visitors: 2782912.82","year: 2004.949<br />visitors: 2722673.90","year: 2006.177<br />visitors: 2658473.39","year: 2007.405<br />visitors: 2590211.21","year: 2008.633<br />visitors: 2517789.31","year: 2009.861<br />visitors: 2441109.60","year: 2011.089<br />visitors: 2360074.03","year: 2012.316<br />visitors: 2274584.53","year: 2013.544<br />visitors: 2184543.03","year: 2014.772<br />visitors: 2089851.46","year: 2016.000<br />visitors: 1990411.75","year: 2016.000<br />visitors: 1990411.75","year: 2016.000<br />visitors: 1990411.75","year: 2014.772<br />visitors: 2089851.46","year: 2013.544<br />visitors: 2184543.03","year: 2012.316<br />visitors: 2274584.53","year: 2011.089<br />visitors: 2360074.03","year: 2009.861<br />visitors: 2441109.60","year: 2008.633<br />visitors: 2517789.31","year: 2007.405<br />visitors: 2590211.21","year: 2006.177<br />visitors: 2658473.39","year: 2004.949<br />visitors: 2722673.90","year: 2003.722<br />visitors: 2782912.82","year: 2002.494<br />visitors: 2839260.15","year: 2001.266<br />visitors: 2891546.66","year: 2000.038<br />visitors: 2939547.58","year: 1998.810<br />visitors: 2983038.12","year: 1997.582<br />visitors: 3021793.51","year: 1996.354<br />visitors: 3055588.97","year: 1995.127<br />visitors: 3084199.70","year: 1993.899<br />visitors: 3107400.92","year: 1992.671<br />visitors: 3124967.87","year: 1991.443<br />visitors: 3137675.40","year: 1990.215<br />visitors: 3151950.54","year: 1988.987<br />visitors: 3167360.05","year: 1987.759<br />visitors: 3181933.36","year: 1986.532<br />visitors: 3193699.94","year: 1985.304<br />visitors: 3200689.24","year: 1984.076<br />visitors: 3200930.70","year: 1982.848<br />visitors: 3192453.78","year: 1981.620<br />visitors: 3173287.92","year: 1980.392<br />visitors: 3141462.59","year: 1979.165<br />visitors: 3092961.85","year: 1977.937<br />visitors: 3022211.21","year: 1976.709<br />visitors: 2932502.52","year: 1975.481<br />visitors: 2827677.76","year: 1974.253<br />visitors: 2711578.94","year: 1973.025<br />visitors: 2588048.07","year: 1971.797<br />visitors: 2460927.15","year: 1970.570<br />visitors: 2334058.20","year: 1969.342<br />visitors: 2211283.21","year: 1968.114<br />visitors: 2096444.19","year: 1966.886<br />visitors: 1993254.21","year: 1965.658<br />visitors: 1887968.41","year: 1964.430<br />visitors: 1771718.83","year: 1963.203<br />visitors: 1647903.37","year: 1961.975<br />visitors: 1519919.93","year: 1960.747<br />visitors: 1391166.42","year: 1959.519<br />visitors: 1265040.72","year: 1958.291<br />visitors: 1144940.75","year: 1957.063<br />visitors: 1034264.40","year: 1955.835<br />visitors:  936409.56","year: 1954.608<br />visitors:  854031.62","year: 1953.380<br />visitors:  779077.35","year: 1952.152<br />visitors:  708337.27","year: 1950.924<br />visitors:  641696.55","year: 1949.696<br />visitors:  579040.40","year: 1948.468<br />visitors:  520253.99","year: 1947.241<br />visitors:  465222.50","year: 1946.013<br />visitors:  413831.12","year: 1944.785<br />visitors:  365965.03","year: 1943.557<br />visitors:  321509.41","year: 1942.329<br />visitors:  280406.15","year: 1941.101<br />visitors:  242889.56","year: 1939.873<br />visitors:  209041.57","year: 1938.646<br />visitors:  178910.67","year: 1937.418<br />visitors:  152545.32","year: 1936.190<br />visitors:  129994.00","year: 1934.962<br />visitors:  111305.16","year: 1933.734<br />visitors:   96527.28","year: 1932.506<br />visitors:   85708.83","year: 1931.278<br />visitors:   78898.29","year: 1930.051<br />visitors:   76066.08","year: 1928.823<br />visitors:   77056.08","year: 1927.595<br />visitors:   81856.49","year: 1926.367<br />visitors:   90461.75","year: 1925.139<br />visitors:  102866.32","year: 1923.911<br />visitors:  119064.63","year: 1922.684<br />visitors:  139051.14","year: 1921.456<br />visitors:  162820.29","year: 1920.228<br />visitors:  190366.54","year: 1919.000<br />visitors:  221684.32","year: 1919.000<br />visitors:  221684.32"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(255,0,0,0.4)","dash":"solid"},"fill":"toself","fillcolor":"rgba(153,153,153,0.4)","hoveron":"points","hoverinfo":"x+y","showlegend":false,"xaxis":"x","yaxis":"y","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":54.7945205479452},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Acadia National Park Visitation","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1914.15,2020.85],"tickmode":"array","ticktext":["1920","1940","1960","1980","2000","2020"],"tickvals":[1920,1940,1960,1980,2000,2020],"categoryorder":"array","categoryarray":["1920","1940","1960","1980","2000","2020"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Year","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-415880.434071192,5719848.78257482],"tickmode":"array","ticktext":["0e+00","2e+06","4e+06"],"tickvals":[0,2000000,4000000],"categoryorder":"array","categoryarray":["0e+00","2e+06","4e+06"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Visitation","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"39701fe14db4":{"x":{},"y":{},"type":"scatter"},"39705a576a5b":{"x":{},"y":{}},"39701bfc24d4":{"x":{},"y":{}}},"cur_data":"39701fe14db4","visdat":{"39701fe14db4":["function (y) ","x"],"39705a576a5b":["function (y) ","x"],"39701bfc24d4":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

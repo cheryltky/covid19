@@ -3,6 +3,7 @@ title: "Covid-19 World Data in Graphs"
 output: html_document
 ---
 
+
 ### Dataset was pulled from John Hopkins University
 
 ```{r dataset, include=FALSE}

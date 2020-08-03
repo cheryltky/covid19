@@ -12,10 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 #GG animate
 
 
-##Application of covid19 dataset to gganimate
+###Application of Covid19 dataset to gganimate
 
-#Tutorial1
-```{r}
+```{r load_libraries, echo=FALSE}
 # coronavirus evolution of cases over time using the Johns Hopkins data set
 # 1.03.2020, protzetter@bluewin.ch, https://www.linkedin.com/in/rotzetter/
 
@@ -28,9 +27,6 @@ library(gifski)
 library(av)
 install.packages("av")
 
-
-# load data from Johns Hopkins github
-
 # load data from Johns Hopkins github
 
 confirmedCases= read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
@@ -38,10 +34,8 @@ deathCases= read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/
 recoveredCases= read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
 
 
-
 # set system locale for date conversion purpose
 Sys.setlocale("LC_TIME", "English")
-
 
 #convert data sets into columns and remove unwanted columns
 
@@ -105,6 +99,9 @@ p<-ggplot(df2, aes(x=Date, y=cases, group=State, color=State)) +
   panel.grid.minor = element_blank(),
   axis.line = element_line(colour = "black"),
   plot.margin = margin(5.5, 40, 5.5, 5.5))
+```
+
+```{r animatedgiffile, echo=FALSE}
 
 # create animation gif file
 animate(p, fps=5,renderer = gifski_renderer("virusevolution.gif"), end_pause = 10)
