@@ -74,11 +74,13 @@ summary(world)
 ```
 
 ## GRAPHS
+
 ### Barchart of cases over time :
 
 ```{r ggplot2, include=FALSE}
 library(ggplot2)
 ```
+
 
 ```{r world confirmed, echo=FALSE}
 #World confirmed
@@ -93,15 +95,7 @@ plot(world)
 ```
 
 
-```{r australia_confirmed, echo=FALSE}
-# Australia confirmed
-ggplot(australia, aes(x = date, y = confirmed)) + geom_bar(stat = "identity", width = 0.1)+
-  theme_classic()+
-  labs(title = "Covid-19 Confirmed Cases in Australia", x= "Date", y= "Daily confrmed cases")+
-  theme(plot.title = element_text(hjust = 0.5))
-```
-
-```{r world, echo=FALSE}
+```{r world, include=FALSE}
 # World confirmed, deaths, recovered
 str(world)
 world %>% gather("Type","Cases",-c(date,days)) %>% 
@@ -112,4 +106,73 @@ world %>% gather("Type","Cases",-c(date,days)) %>%
            theme(plot.title = element_text(hjust = 0.5))
 ```
 
+```{r australia_confirmed, echo=FALSE}
+# Australia confirmed
+ggplot(australia, aes(x = date, y = confirmed)) + geom_bar(stat = "identity", width = 0.1)+
+  theme_classic()+
+  labs(title = "Covid-19 Confirmed Cases in Australia", x= "Date", y= "Daily confrmed cases")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+### Line graph of cases over time
+
+```{r world_confirmed, echo=FALSE}
+# World confirmed
+ggplot(world, aes(x=days, y=confirmed)) + geom_line() +
+  theme_classic() +
+  labs(title = "Covid-19 Global Confirmed Cases", x= "Days", y= "Daily confirmed cases") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+### World confirmed with counts in log10 scale
+```{r world_confirmedLOG, echo=FALSE}
+ggplot(world, aes(x=days, y=confirmed)) + geom_line() +
+  theme_classic() +
+  labs(title = "Covid-19 Global Confirmed Cases", x= "Days", y= "Daily confirmed cases  (log scale)") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_y_continuous(trans="log10")
+
+```
+
+
+### World confirmed, deaths and recovered
+```{r worldtwo, echo=FALSE}
+# World confirmed, deaths and recovered
+#str(world)
+world %>% gather("Type", "Cases", -c(date, days)) %>%
+ggplot(aes(x=days, y=Cases, colour=Type)) + geom_line() +
+  theme_classic() +
+  labs(title = "Covid-19 Global Cases", x= "Days", y= "Daily cases") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+### Confirmed by country for select countries with counts in log10 scale
+```{r country_selection1, include=FALSE, echo=FALSE}
+countryselection <- country %>% filter(Country.Region==c("US", "Italy", "China", "France", "United Kingdom", "Germany"))
+```
+
+```{r country_selection, echo=FALSE}
+ggplot(countryselection, aes(x=days, y=confirmed, colour=Country.Region)) + geom_line(size=1) +
+  theme_classic() +
+  labs(title = "Covid-19 Confirmed Cases by Country", x= "Days", y= "Daily confirmed cases (log scale)") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_y_continuous(trans="log10")
+```
+
+### Matrix of line graphs of confirmed, deaths and recovered for select countries in log10 scale
+```{r countryselection3, echo=FALSE, include=FALSE}
+str(countryselection)
+```
+
+```{r facet, echo=FALSE,}
+
+countryselection %>% gather("Type", "Cases", -c(date, days, Country.Region)) %>%
+ggplot(aes(x=days, y=Cases, colour=Country.Region)) + geom_line(size=1) +
+  theme_classic() +
+  labs(title = "Covid-19 Cases by Country", x= "Days", y= "Daily cases (log scale)") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_y_continuous(trans="log10") +
+  facet_grid(rows=vars(Type))
+```
 
