@@ -1,5 +1,5 @@
 ---
-title: "My Website"
+title: "Covid-19 Global Data Visualisation"
 ---
 
-Hello, Website!
+Global Data Visualisation

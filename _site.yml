@@ -1,8 +1,8 @@
-name: "my-website"
+name: "Covid-19 Projects"
 navbar:
-  title: "My Website"
+  title: "Covid-19 Projects"
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
+    - text: "Covid-19"
+      href: covid19stats.html
