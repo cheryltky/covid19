@@ -4,5 +4,5 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Covid-19"
+    - text: "Covid-19 Project"
       href: covid19stats.html

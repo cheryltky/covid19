@@ -1,5 +1,5 @@
 ---
-title: "Covid-19 Global Data Visualisation"
+title: "Covid-19 Global Data Visualisation Project"
 ---
 
-Global Data Visualisation
+Exploring meaningful ways of presenting Covid-19 Global Data
