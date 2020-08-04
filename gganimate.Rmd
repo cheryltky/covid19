@@ -1,16 +1,8 @@
 ---
 title: "gganimate"
-author: "Cheryl"
 date: "15 April 2020"
 output: html_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-#GG animate
-
 
 ###Application of Covid19 dataset to gganimate
 
@@ -29,16 +21,15 @@ install.packages("av")
 
 # load data from Johns Hopkins github
 
-confirmedCases= read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
-deathCases= read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
-recoveredCases= read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
+confirmedCases= read.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
+deathCases= read.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
+recoveredCases= read.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
 
 
 # set system locale for date conversion purpose
 Sys.setlocale("LC_TIME", "English")
 
 #convert data sets into columns and remove unwanted columns
-
 confirmedCases<-confirmedCases%>%select(-c(Lat,Long))%>%melt(id=c('Country/Region','Province/State'))
 confirmedCases<-confirmedCases%>%group_by(`Country/Region`,variable)%>%summarise(Confirmed=sum(value))
 
@@ -68,6 +59,7 @@ df1<-mergedCases %>% group_by(Date) %>% summarise_at(c("Confirmed","Recovered","
 
 dff<-as.data.frame(rbind( c(0,0,0),apply(df1[-1] , 2 , diff )))
 colnames(dff)<-c("New","New recovered","New Death")
+
 
 df1<-cbind(df1,dff)
 
