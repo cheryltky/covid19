@@ -5,7 +5,7 @@ date: "15 April 2020"
 output: html_document
 ---
 
-```{r}
+
 library(tidyverse)
 gapminder <- readr::read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder.csv")
 
@@ -15,7 +15,7 @@ head(gapminder,10)#shows first time I indicate
 str(gapminder)
 names(gapminder)
 summary(gapminder)
-```
+
 # to specify a single variable from a data frame
 ```{r}
 head(gapminder$lifeExp)
