@@ -1,13 +1,10 @@
 ---
-title: "TidyRtutorial"
-author: "Cheryl"
+"TidyRtutorial"
 date: "21 April 2020"
-output: html_document
----
 
-Data wrangling with 'tidyr'
+#Data wrangling with 'tidyr'
 
-```{r}
+
 library(tidyverse)
 
 #wide format
@@ -72,11 +69,11 @@ life_df <- gap_long %>%
          continent == "Americas")
 ggplot(life_df, aes( x = year, y = obs_values, color = country)) +
   geom_line()
-```
 
-Using gap_long, calcuate the mean life expectancy for each continet from 1982 to 2007 over time.
 
-```{r}
+#Using gap_long, calcuate the mean life expectancy for each continet from 1982 to 2007 over time.
+
+
 continents <- gap_long %>% 
   filter(obs_type == "lifeExp",
          year > 1981) %>% 
@@ -93,13 +90,13 @@ ggplot(data = continents, aes(x = year, y = mean_le, color = continent)) +
        color = "Continent")+
   theme_classic()+
   scale_fill_brewer(palette = "Blues")
-```
 
-Using spread() to put our data back into wide format
-```{r}
+
+#Using spread() to put our data back into wide format
+
 gap_normal <- gap_long %>% 
   spread(obs_type, obs_values)
-# check
+#check
 
 dim(gap_normal)
 dim(gapminder)
@@ -107,10 +104,9 @@ names(gap_normal)
 names(gapminder)
 
 #now my df for gap_normal is the same as gapminder
-```
 
-Next, convert gap_long all the way back to gap_wide
-```{r}
+#Next, convert gap_long all the way back to gap_wide
+
 head(gap_long)#remember the columns
 
 gap_wide_new <- gap_long %>% 
@@ -121,5 +117,5 @@ unite(col = var_names,obs_type, year, sep = "_") %>%
 spread(key = var_names, value = obs_values)
 
 str(gap_wide_new)
-```
+
 

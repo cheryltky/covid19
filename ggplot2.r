@@ -1,16 +1,14 @@
----
-title: "Graphics with ggplot2"
-author: "Cheryl"
-date: "11 April 2020"
-output: html_document
----
 
-```{r}
+"Graphics with ggplot2"
+"11 April 2020"
+
+
+
 ## ggplot2 do this everytime you start R
 library(tidyverse)
-```
 
-```{r}
+
+
 #National Parks in California
 ca <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/ca.csv") 
 
@@ -26,10 +24,10 @@ visit_16 <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science
 #All Nationally designated sites in Massachusetts
 mass <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/mass.csv")
 
-```
+
 
 #Building my plot
-```{r}
+
 head(ca)
 ggplot(data = ca) +
   geom_point(aes(x = year, y = visitors, color = park_name)) + #add colour
@@ -39,10 +37,10 @@ ggplot(data = ca) +
   theme_bw() +
   theme(legend.title = element_blank())
 
-```
+
 
 #Exercise for SE parks dataset
-```{r}
+
 head(se)
 ggplot(data = se) +
   geom_point(aes(x = year, y = visitors, color = park_name)) +
@@ -52,26 +50,26 @@ ggplot(data = se) +
   theme_light()+
   theme(legend.title = element_blank(),
         axis.text.x = element_text(angle = 90, hjust = 1, size = 14 ))
-```
+
 
 #faceting to split one plot into multiple plots
 
-```{r}
+
 ggplot(data = se) +
   geom_point(aes(x = year, y = visitors)) +
   facet_wrap(~state)
-```
+
 
 #make the faceted plot split further by park 
-```{r}
+
 ggplot(data = se)+
   geom_point(aes(x = year, y = visitors, color = park_name))+
   facet_wrap(~state, scales = "free")
   
-```
+
 
 #Geoms
-```{r}
+
 #geomjitter
 ggplot(data = se) +
   geom_jitter(aes(x = park_name, y = visitors, color = park_name),
@@ -90,29 +88,24 @@ ggplot(se, aes(x = park_name, y = visitors)) +
 ggplot(se, aes(x = year, y = visitors, color = park_name))+
   geom_line()
   
-```
 
 #barcharts
-```{r}
+
 ggplot(data = visit_16, aes(x = state, y = visitors, fill = park_name)) +
   geom_bar(stat = "identity", position = "dodge")
-```
 
 #flipping x and y coords
-```{r}
+
 ggplot(data = visit_16, (aes(x = state, y = visitors, fill = park_name))) +
          geom_bar(stat = "identity", position = "dodge")+
   coord_flip()
-```
 
 #change x-axis tick labels to full state names  
-```{r}
+
 ggplot(data = visit_16, (aes( x= state, y = visitors, fill = park_name))) +
          geom_bar(stat = "identity", position = "dodge")+
   scale_x_discrete(labels=c("Arizona","Colorado"))
-```
 
-```{r}
 ggplot(data = mass)+
   geom_bar (aes(x = type, fill = park_name))+
   labs(x = "",
@@ -121,7 +114,7 @@ ggplot(data = mass)+
 ```
 
 #to save publication quality plots
-```{r}
+
 my_plot <- ggplot(data = mass)+
   geom_bar (aes(x = type, fill = park_name))+
   labs(x = "",
@@ -129,16 +122,16 @@ my_plot <- ggplot(data = mass)+
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 7))
 
 ggsave("name_of_file.png", my_plot, width = 15, height = 10)
-```
+
 
 #other interactive packages
-```{r}
+
 install.packages("plotly")
 library(plotly)
 ggplotly(my_plot)
-```
 
-```{r}
+
+
 acad_vis <- ggplot(data = acadia, aes(x = year, y = visitors)) + 
   geom_point() +
   geom_line() +
@@ -151,6 +144,4 @@ acad_vis <- ggplot(data = acadia, aes(x = year, y = visitors)) +
 acad_vis
 
 ggplotly(acad_vis)
-
-```
 
