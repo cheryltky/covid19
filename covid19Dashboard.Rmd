@@ -1,12 +1,12 @@
 ---
-title: "Covid19 Dashboard"
+title: "Coronavirus in Australia"
 author: "Cheryl"
 output: 
-flexdashboard::flex_dashboard:
-  orientation:rows
-  #social:["facebook", "twitter", "linkedin"]
-  source_code:embed
-  vertical_layout:fill
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    # social: ["facebook", "twitter", "linkedin"]
+    source_code: embed
+    vertical_layout: fill
 ---
 
 ```{r setup, include=FALSE}
@@ -18,7 +18,7 @@ data(coronavirus)
 #view(coronavirus)
 #max(coronavirus$date)
 
-` %>% ` <- magrittr::` %>% `
+`%>%` <- magrittr::`%>%`
 #----------------------Parameters--------------------------
 # Set colours
 # https://www.w3.org/TR/css-color-3/#svg-color
@@ -46,7 +46,7 @@ dplyr::group_by(country, type) %>%
   dplyr::mutate(country = factor(country, levels = country))
 
 df_daily <- coronavirus %>%
-  dplyr::filter(country == "Belgium") %>%
+  dplyr::filter(country == "Australia") %>%
   dplyr::group_by(date, type) %>%
   dplyr::summarise(total = sum(cases, na.rm = TRUE)) %>%
   tidyr::pivot_wider(
@@ -69,7 +69,6 @@ df <- coronavirus %>% dplyr::filter(date == max(date))
 ```
 
 Summary
-
 ===================================================================
 
 Row(data-width = 400)
@@ -78,12 +77,11 @@ Row(data-width = 400)
 ###confirmed {.value-box}
 
 ```{r}
-
 valueBox(
-  value = paste(format(sum(df$confirmed), big.mark = ",", "", sep = " "),
+  value = paste(format(sum(df$confirmed), big.mark = ","), "", sep = " "),
                 caption = "Total confirmed cases",
                 icon = "fas fa-user-md",
-                color = confirmed_color)
+                color = confirmed_color
 )
 ```  
 
@@ -112,7 +110,7 @@ valueBox(
 Row
 -----------------------------------------------------------------------
 
-### **Daily cumulative cases by type** (Belgium only)
+### **Daily cumulative cases by type** (Australia only)
     
 ```{r}
 plotly::plot_ly(data = df_daily) %>%
@@ -213,10 +211,10 @@ daily_confirmed %>%
   plotly::plot_ly() %>%
   plotly::add_trace(
     x = ~date,
-    y = ~Belgium,
+    y = ~Australia,
     type = "scatter",
     mode = "lines+markers",
-    name = "Belgium"
+    name = "Australia"
   ) %>%
   # plotly::add_trace(
   #   x = ~date,
@@ -277,7 +275,7 @@ daily_confirmed %>%
 ```{r daily_summary}
 df_EU <- coronavirus %>%
   # dplyr::filter(date == max(date)) %>%
-  dplyr::filter(country == "Belgium" |
+  dplyr::filter(country == "Australia" |
     country == "France" |
     country == "Italy" |
     country == "Spain") %>%
@@ -342,7 +340,7 @@ library(leaflet)
 library(leafpop)
 library(purrr)
 cv_data_for_plot <- coronavirus %>%
-  # dplyr::filter(country == "Belgium") %>%
+  # dplyr::filter(country == "Australia") %>%
   dplyr::filter(cases > 0) %>%
   dplyr::group_by(country, province, lat, long, type) %>%
   dplyr::summarise(cases = sum(cases)) %>%
@@ -390,9 +388,9 @@ map_object %>%
 About
 =======================================================================
 
-**The Coronavirus Dashboard: the case of Belgium**
+**The Coronavirus Dashboard: Case Study of Australia*
 
-This [Coronavirus dashboard: the case of Belgium](https://www.antoinesoetewey.com/files/coronavirus-dashboard.html) provides an overview of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Belgium. This dashboard is built with R using the R Makrdown framework and was adapted from this [dashboard](https://ramikrispin.github.io/coronavirus_dashboard/){target="_blank"} by Rami Krispin.
+This [Coronavirus dashboard: the case of Australia](https://www.cheryltky.github.io.com/covid19/covid19Dashboard.html) provides an overview of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Australia. This dashboard is built with R using the R Markdown framework and was adapted from this [dashboard](https://ramikrispin.github.io/coronavirus_dashboard/){target="_blank"} by Rami Krispin.
 
 **Code**
 
