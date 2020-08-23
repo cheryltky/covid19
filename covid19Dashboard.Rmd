@@ -10,35 +10,37 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+#------------------ Packages ------------------
 library(flexdashboard)
-#install.packages("devtools")
-#devtools::install_github("RamiKrispin/coronavirus", force = TRUE)
+# install.packages("devtools")
+# devtools::install_github("RamiKrispin/coronavirus", force = TRUE)
 library(coronavirus)
 data(coronavirus)
-#view(coronavirus)
-#max(coronavirus$date)
+# View(coronavirus)
+# max(coronavirus$date)
 
 `%>%` <- magrittr::`%>%`
-#----------------------Parameters--------------------------
-# Set colours
+#------------------ Parameters ------------------
+# Set colors
 # https://www.w3.org/TR/css-color-3/#svg-color
 confirmed_color <- "purple"
-active_color <-"#1f77b4"
+active_color <- "#1f77b4"
 recovered_color <- "forestgreen"
 death_color <- "red"
-#--------------- Data ------------------------------------
-df <- coronavirus %>% 
-#dplyr::filter(date==max(date)) %>% 
-dplyr::filter(country =="Australia") %>% 
-dplyr::group_by(country, type) %>% 
-  dplyr::summarise(total = sum(cases)) %>% 
+#------------------ Data ------------------
+df <- coronavirus %>%
+  # dplyr::filter(date == max(date)) %>%
+  dplyr::filter(country == "Australia") %>%
+  dplyr::group_by(country, type) %>%
+  dplyr::summarise(total = sum(cases)) %>%
   tidyr::pivot_wider(
     names_from = type,
     values_from = total
-  ) %>% 
-  # dplyr::mutate(unrecovered = confirmed - ifelse(is.na(recovered) - ifelse(is.na(death), 0, death)) %>% 
-  dplyr::arrange(-confirmed) %>% 
-  dplyr::ungroup() %>% 
+  ) %>%
+  # dplyr::mutate(unrecovered = confirmed - ifelse(is.na(recovered), 0, recovered) - ifelse(is.na(death), 0, death)) %>%
+  dplyr::mutate(unrecovered = confirmed - ifelse(is.na(death), 0, death)) %>%
+  dplyr::arrange(-confirmed) %>%
+  dplyr::ungroup() %>%
   dplyr::mutate(country = dplyr::if_else(country == "United Arab Emirates", "UAE", country)) %>%
   dplyr::mutate(country = dplyr::if_else(country == "Mainland China", "China", country)) %>%
   dplyr::mutate(country = dplyr::if_else(country == "North Macedonia", "N.Macedonia", country)) %>%
@@ -65,25 +67,36 @@ df_daily <- coronavirus %>%
   )
 
 
-df <- coronavirus %>% dplyr::filter(date == max(date))
+df1 <- coronavirus %>% dplyr::filter(date == max(date))
 ```
 
 Summary
-===================================================================
+=======================================================================
 
-Row(data-width = 400)
--------------------------------------------------------------------
+Row {data-width=400}
+-----------------------------------------------------------------------
 
-###confirmed {.value-box}
+### confirmed {.value-box}
 
 ```{r}
+
 valueBox(
   value = paste(format(sum(df$confirmed), big.mark = ","), "", sep = " "),
-                caption = "Total confirmed cases",
-                icon = "fas fa-user-md",
-                color = confirmed_color
+  caption = "Total confirmed cases",
+  icon = "fas fa-user-md",
+  color = confirmed_color
 )
-```  
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -388,9 +401,9 @@ map_object %>%
 About
 =======================================================================
 
-**The Coronavirus Dashboard: Case Study of Australia*
+**The Coronavirus Dashboard: the case of Belgium**
 
-This [Coronavirus dashboard: the case of Australia](https://www.cheryltky.github.io.com/covid19/covid19Dashboard.html) provides an overview of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Australia. This dashboard is built with R using the R Markdown framework and was adapted from this [dashboard](https://ramikrispin.github.io/coronavirus_dashboard/){target="_blank"} by Rami Krispin.
+This [Coronavirus dashboard: the case of Australia](https://www.antoinesoetewey.com/files/coronavirus-dashboard.html) provides an overview of the 2019 Novel Coronavirus COVID-19 (2019-nCoV) epidemic for Belgium. This dashboard is built with R using the R Makrdown framework and was adapted from this [dashboard](https://ramikrispin.github.io/coronavirus_dashboard/){target="_blank"} by Rami Krispin.
 
 **Code**
 
@@ -416,14 +429,3 @@ More information about this dashboard (and how to replicate it for your own coun
 **Update**
 
 The data is as of `r format(max(coronavirus$date), "%A %B %d, %Y")` and the dashboard has been updated on `r format(Sys.time(), "%A %B %d, %Y")`.
-
-
-
-*Go back to [www.statsandr.com](https://www.statsandr.com/) (blog) or [www.antoinesoetewey.com](https://www.antoinesoetewey.com/) (personal website)*.
-
-
-
-
-
-
-
