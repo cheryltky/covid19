@@ -12,9 +12,7 @@ theme_set(theme_bw())
 
 <<<<<<< HEAD
 ##only for troubleshooting.
-#setwd("~/Documents/cheryl/covid19")
 =======
-setwd("~/Documents/cheryl/covid19")
 
 #load the data
 #australia's data only

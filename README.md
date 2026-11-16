@@ -1,5 +1,7 @@
 # How did COVID-19 spread, and how did countries compare?
 
+![Cover](assets/cover.png)
+
 A public-health dashboard and a set of R analyses that pull case counts from
 open web sources and show how confirmed cases and deaths grew over 2020.
 

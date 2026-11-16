@@ -8,7 +8,7 @@ output: html_document
 
 ```{r load_libraries, echo=FALSE}
 # coronavirus evolution of cases over time using the Johns Hopkins data set
-# 1.03.2020, protzetter@bluewin.ch, https://www.linkedin.com/in/rotzetter/
+# Adapted from a public example dated 1 March 2020
 
 library(gganimate)
 library(dplyr)
