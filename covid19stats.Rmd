@@ -83,7 +83,7 @@ library(ggplot2)
 ```
 
 
-```{r world confirmed, echo=FALSE}
+```{r world_confirmed_bar, echo=FALSE}
 #World confirmed
 ggplot(world, aes(x = date, y= confirmed)) +
   geom_bar(stat="identity",

@@ -6,7 +6,7 @@ theme_set(theme_bw())
 
 #load the data
 #australia's data only
-covid <- readr::read_csv("~/Github/covid19/Data/Australian coronavirus tracking - latest totals.csv")
+covid <- readr::read_csv("Data/australian-coronavirus-tracking-latest-totals.csv")
 head(covid)
 str(covid)
 summary(covid)
